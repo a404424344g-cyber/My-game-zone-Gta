@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game Zone</title>
+<style>
+body{margin:0;background:#17243b;color:white;font-family:Arial;text-align:center}
+h1{color:#ffd43b}canvas{background:#91b5a0;width:100%;max-width:700px;touch-action:none}
+button{padding:14px;margin:5px;border:0;border-radius:10px;background:#ffd43b;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>👑 GAME ZONE</h1>
+<p>City Adventure Mini</p>
+<canvas id="g" width="700" height="430"></canvas>
+<p>Coins: <b id="score">0</b></p>
+<div><button onclick="move(0,-1)">⬆️</button><br>
+<button onclick="move(-1,0)">⬅️</button>
+<button onclick="move(0,1)">⬇️</button>
+<button onclick="move(1,0)">➡️</button></div>
+<button onclick="drive()">🚘 Change Vehicle</button>
+<button onclick="mission()">⭐ Mission</button>
+<script>
+const c=document.getElementById('g'),x=c.getContext('2d');
+let p={x:350,y:220},coin={x:120,y:120},score=0,car=false;
+function draw(){
+x.fillStyle='#91b5a0';x.fillRect(0,0,700,430);
+x.fillStyle='#525d68';x.fillRect(0,80,700,70);x.fillRect(240,0,80,430);
+x.strokeStyle='#f7e9a1';x.setLineDash([15,12]);x.beginPath();x.moveTo(0,115);x.lineTo(700,115);x.moveTo(280,0);x.lineTo(280,430);x.stroke();x.setLineDash([]);
+x.fillStyle='#ffd43b';x.beginPath();x.arc(coin.x,coin.y,12,0,7);x.fill();
+x.fillStyle=car?'#ed4545':'#202a3b';x.fillRect(p.x-15,p.y-12,30,24);
+x.fillStyle='white';x.fillText(car?'🚘':'🙂',p.x-10,p.y+5);
+}
+function move(a,b){p.x=Math.max(18,Math.min(682,p.x+a*20));p.y=Math.max(18,Math.min(412,p.y+b*20));if(Math.hypot(p.x-coin.x,p.y-coin.y)<25){score+=10;document.getElementById('score').textContent=score;coin={x:30+Math.random()*640,y:30+Math.random()*370}}draw()}
+function drive(){car=!car;draw()}
+function mission(){score+=25;document.getElementById('score').textContent=score;alert('Mission complete! +25 coins');draw()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='w')move(0,-1);if(e.key==='ArrowDown'||e.key==='s')move(0,1);if(e.key==='ArrowLeft'||e.key==='a')move(-1,0);if(e.key==='ArrowRight'||e.key==='d')move(1,0)});
+draw();
+</script>
+</body>
+  </html>
